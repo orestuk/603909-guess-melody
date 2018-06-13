@@ -1,4 +1,4 @@
 import {renderScreen} from './util.js';
-import screenEL from './welcome.js';
+import welcomeEl from './screen/welcome.js';
 
-renderScreen(screenEL);
+renderScreen(welcomeEl);

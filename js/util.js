@@ -1,12 +1,9 @@
 const mainEl = document.querySelector(`section.main`);
 
-export const getElementFromTemplate = (template, ...classes) => {
-  const sectionEl = document.createElement(`section`);
-  sectionEl.innerHTML = template;
-  classes.forEach((item) => {
-    sectionEl.classList.add(item);
-  });
-  return sectionEl;
+export const getElementFromTemplate = (template) => {
+  const templateEl = document.createElement(`template`);
+  templateEl.innerHTML = template.trim();
+  return templateEl.content.firstChild;
 };
 
 export const renderScreen = (element) => {

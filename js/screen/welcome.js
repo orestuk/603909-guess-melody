@@ -1,4 +1,5 @@
-import {getElementFromTemplate} from './util.js';
+import {getElementFromTemplate, renderScreen} from '../util.js';
+import artistScreenEl from '../screen/artist.js';
 
 const template = `
 <section class="main main--welcome">
@@ -12,4 +13,12 @@ const template = `
     </p>
 </section>`;
 
-export default getElementFromTemplate(template, `main`, `main-welcome`);
+const element = getElementFromTemplate(template);
+
+const buttonEl = element.querySelector(`button.main-play`);
+
+buttonEl.addEventListener(`click`, () => {
+  renderScreen(artistScreenEl);
+});
+
+export default element;
