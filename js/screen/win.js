@@ -1,5 +1,5 @@
-import {getElementFromTemplate, renderScreen} from '../util.js';
-import welcomeScreenEl from '../screen/welcome.js';
+import {getElementFromTemplate, renderScreen} from '../util';
+import welcomeScreenEl from './welcome';
 
 const template = `
 <section class="main main--result">

@@ -1,6 +1,6 @@
-import {getElementFromTemplate, renderScreen} from '../util.js';
-import genreEl from '../screen/genre.js';
-import welcomeEl from '../screen/welcome.js';
+import {getElementFromTemplate, renderScreen} from '../util';
+import genreEl from './genre';
+import welcomeEl from './welcome';
 
 const template = `
 <section class="main main--level main--level-artist">

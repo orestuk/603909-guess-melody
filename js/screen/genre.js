@@ -1,8 +1,8 @@
-import {getElementFromTemplate, renderScreen} from '../util.js';
-import winScreenEl from './win.js';
-import timeoutScreenEl from './timeout.js';
-import attemptsScreenEl from './attempts.js';
-import welcomeScreenEl from './welcome.js';
+import {getElementFromTemplate, renderScreen} from '../util';
+import winScreenEl from './win';
+import timeoutScreenEl from './timeout';
+import attemptsScreenEl from './attempts';
+import welcomeScreenEl from './welcome';
 
 const resultsScreensEl = [winScreenEl, timeoutScreenEl, attemptsScreenEl];
 
