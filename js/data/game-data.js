@@ -1,9 +1,32 @@
+export const gameState = {
+  mistakesQuantity: 0,
+  answersQuantity: 0,
+  answers: []
+};
+
+export const allGameResults = [];
+
 export const SUCCESS_TIMEOUT = 30;
 export const MAX_MISTAKES = 2;
-export const MIN_RIGHT_ANSWERS = 10;
+export const MAX_ANSWERS_QUANTITY = 10;
+export const ScreenType = {
+  START: 0,
+  WELCOME: 1,
+  ARTIST: 2,
+  GENRE: 3,
+  WIN: 4,
+  ATTEMPTS: 5,
+  TIMEOUT: 6
+};
+export const UpdateStateResult = {
+  TIMEOUT: 0,
+  ATTEMPTS: 1,
+  SUCCESS: 2,
+  CONTINUE: 3
+};
 
-export const Answer = function (isRight, spentTime) {
-  this.isRight = isRight;
+export const Answer = function (isCorrect, spentTime) {
+  this.isCorrect = isCorrect;
   this.spentTime = spentTime;
 };
 
@@ -25,38 +48,24 @@ Timer.prototype.tick = function () {
   return `Осталось ${this.interval} секунд!`;
 };
 
-/*
- * results - array of 1 and 0 values, 1 - right answer, 0 - wrong answer
- * times - array of time spent on answer
- * failed attempts - quantity of fails
-*/
-export const calculatePoints = (answers, leftNotesQuantity) => {
+export const calculatePoints = (answers) => {
   let result = 0;
   let rightAnswersNumber = 0;
   if (!answers) {
     throw new Error(`Answers could not be undefined or null`);
   }
-  if (!leftNotesQuantity) {
-    throw new Error(`Left notes quantity could not be undefined or null`);
-  }
   if (!Array.isArray(answers)) {
     throw new Error(`Answers should be of type array`);
   }
-  if (typeof leftNotesQuantity !== `number`) {
-    throw new Error(`Left Notes Quantity should be of type number`);
-  }
-  if ((leftNotesQuantity < 0) || (leftNotesQuantity > MAX_MISTAKES)) {
-    throw new Error(`Notes quantity must be not less then -1 and not grater ${MAX_MISTAKES}`);
-  }
   answers.forEach((item) => {
-    if (item.isRight) {
+    if (item.isCorrect) {
       result += item.spentTime < SUCCESS_TIMEOUT ? 2 : 1;
       rightAnswersNumber++;
     } else {
       result -= 2;
     }
   });
-  if (rightAnswersNumber < MIN_RIGHT_ANSWERS) {
+  if (rightAnswersNumber < MAX_ANSWERS_QUANTITY) {
     result = -1;
   }
   return result;
@@ -65,19 +74,14 @@ export const calculatePoints = (answers, leftNotesQuantity) => {
 export const formatResult = (allResults, playerResult) => {
   let itemPosition;
   let itemsLessPercent;
-  if (playerResult.points === -1) {
-    if (playerResult.remainedTime === 0) {
-      return `Время вышло! Вы не успели отгадать все мелодии`;
-    }
-    if (playerResult.remainedAttempts === 0) {
-      return `У вас закончились все попытки. Ничего, повезёт в следующий раз!`;
-    }
+  if (gameState.mistakesQuantity > MAX_MISTAKES) {
+    return `У вас закончились все попытки. </br> Ничего, повезёт в следующий раз!`;
   }
-  allResults.push(playerResult.points);
+  allResults.push(playerResult);
   allResults.sort((a, b) => b - a);
-  itemPosition = allResults.indexOf(playerResult.points) + 1;
+  itemPosition = allResults.indexOf(playerResult) + 1;
   itemsLessPercent = Math.round((allResults.length - itemPosition) / allResults.length * 100);
-  return `Вы заняли ${itemPosition} место из ${allResults.length} игроков. Это лучше, чем ${itemsLessPercent}% игроков`;
+  return `Вы заняли ${itemPosition} место из ${allResults.length} игроков. </br> Это лучше, чем ${itemsLessPercent}% игроков`;
 };
 
 export const createTimer = (timerInterval) => {

@@ -1,4 +1,4 @@
-import {renderScreen} from './util';
-import welcomeEl from './screen/welcome';
+import {ScreenType} from './data/game-data';
+import {updateGameState} from './controller';
 
-renderScreen(welcomeEl);
+updateGameState(ScreenType.START);
