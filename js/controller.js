@@ -1,12 +1,13 @@
-import createQuestionEl from './screen/question';
+import createQuestionEl, {renderQuestion, renderMistake} from './screen/question';
 import {createAttemptsEl, createWinEl} from './screen/result';
 import createWelcomeEl from './screen/welcome';
 import {renderScreen} from './util';
 import {generateQuestion} from './data/questions-data';
 import resultsData from './data/results-data';
 import {ResultScreen} from './data/results-data';
-import {gameState, ScreenType, allGameResults, Answer, MAX_MISTAKES, UpdateStateResult} from './data/game-data';
+import {TIME_LIMIT, gameState, ScreenType, allGameResults, Answer, MAX_MISTAKES, UpdateStateResult} from './data/game-data';
 import {calculatePoints, MAX_ANSWERS_QUANTITY, formatResult} from './data/game-data';
+import {setTimer} from './timer';
 
 const updateState = (isCorrect, spentTime = 30) => {
   gameState.answers.push(new Answer(isCorrect, spentTime));
@@ -25,7 +26,9 @@ const processAnswers = (isCorrect) => {
   let data;
   switch (updateState(isCorrect)) {
     case UpdateStateResult.CONTINUE:
-      renderScreen(createQuestionEl(generateQuestion()));
+      renderQuestion(generateQuestion());
+      renderMistake();
+      setTimer();
       break;
     case UpdateStateResult.ATTEMPTS:
       data = resultsData.get(ResultScreen.ATTEMPTS);
@@ -44,6 +47,7 @@ const resetGameState = () => {
   gameState.mistakesQuantity = 0;
   gameState.answersQuantity = 0;
   gameState.answers = [];
+  gameState.leftTime = TIME_LIMIT;
 };
 
 export const updateGameState = (screen, question, data) => {
@@ -55,6 +59,7 @@ export const updateGameState = (screen, question, data) => {
       break;
     case ScreenType.WELCOME:
       renderScreen(createQuestionEl(generateQuestion()));
+      setTimer();
       break;
     case ScreenType.ARTIST:
       isCorrect = question.answers[Number(data)].isCorrect;

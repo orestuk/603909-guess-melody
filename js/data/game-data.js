@@ -1,14 +1,7 @@
-export const gameState = {
-  mistakesQuantity: 0,
-  answersQuantity: 0,
-  answers: []
-};
-
-export const allGameResults = [];
-
 export const SUCCESS_TIMEOUT = 30;
 export const MAX_MISTAKES = 2;
 export const MAX_ANSWERS_QUANTITY = 10;
+export const TIME_LIMIT = 5 * 60 * 1000;
 export const ScreenType = {
   START: 0,
   WELCOME: 1,
@@ -24,6 +17,14 @@ export const UpdateStateResult = {
   SUCCESS: 2,
   CONTINUE: 3
 };
+export const gameState = {
+  mistakesQuantity: 0,
+  answersQuantity: 0,
+  answers: [],
+  leftTime: 0,
+};
+
+export const allGameResults = [];
 
 export const Answer = function (isCorrect, spentTime) {
   this.isCorrect = isCorrect;
