@@ -31,12 +31,6 @@ export const Answer = function (isCorrect, spentTime) {
   this.spentTime = spentTime;
 };
 
-export const PlayerResult = function (points, remainedAttempts, remainedTime) {
-  this.points = points;
-  this.remainedAttempts = remainedAttempts;
-  this.remainedTime = remainedTime;
-};
-
 export const Timer = function (interval) {
   this.interval = interval;
 };
@@ -87,4 +81,24 @@ export const formatResult = (allResults, playerResult) => {
 
 export const createTimer = (timerInterval) => {
   return new Timer(timerInterval);
+};
+
+export const updateState = (isCorrect, spentTime = 30) => {
+  gameState.answers.push(new Answer(isCorrect, spentTime));
+  gameState.mistakesQuantity += isCorrect ? 0 : 1;
+  gameState.answersQuantity++;
+  if (gameState.mistakesQuantity > MAX_MISTAKES) {
+    return UpdateStateResult.ATTEMPTS;
+  }
+  if (gameState.answersQuantity > MAX_ANSWERS_QUANTITY) {
+    return UpdateStateResult.SUCCESS;
+  }
+  return UpdateStateResult.CONTINUE;
+};
+
+export const resetGameState = () => {
+  gameState.mistakesQuantity = 0;
+  gameState.answersQuantity = 0;
+  gameState.answers = [];
+  gameState.leftTime = TIME_LIMIT;
 };
