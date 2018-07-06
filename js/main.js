@@ -1,4 +1,3 @@
-import {ScreenType} from './data/game-data';
-import {updateGameState} from './controller';
+import router from './router';
 
-updateGameState(ScreenType.START);
+router.showWelcome();

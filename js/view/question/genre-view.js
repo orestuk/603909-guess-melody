@@ -31,8 +31,9 @@ export class GenreView extends AbstractView {
     }));
     answerButtonEl.addEventListener(`click`, () => {
       const formData = new FormData(formEl);
-      this.onAnswerSelected(formData);
-      // updateGameState(ScreenType.GENRE, question, formData);
+      const isCorrect = Array.from(formData.values())
+        .every((item) => this.question.genre === this.question.answers[item].genre);
+      this.onAnswerSelected(isCorrect);
     });
   }
   onAnswerSelected() {}

@@ -1,11 +1,16 @@
-import {updateGameState} from '../controller';
 import {ResultView} from '../view/result-view';
 import {renderScreen} from '../util';
+import router from '../router';
 
-export default (data, screenType) => {
-  const view = new ResultView(data);
-  view.onReply = () => {
-    updateGameState(screenType);
-  };
-  renderScreen(view.element);
-};
+export class ResultScreen {
+  constructor(model) {
+    this.model = model;
+  }
+  init() {
+    const view = new ResultView(this.model.data);
+    view.onReplay = () => {
+      router.showWelcome();
+    };
+    renderScreen(view.element);
+  }
+}

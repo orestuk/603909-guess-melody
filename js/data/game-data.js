@@ -2,6 +2,7 @@ export const SUCCESS_TIMEOUT = 30;
 export const MAX_MISTAKES = 2;
 export const MAX_ANSWERS_QUANTITY = 10;
 export const TIME_LIMIT = 5 * 60 * 1000;
+export const TIME_DELAY = 1000;
 export const ScreenType = {
   START: 0,
   WELCOME: 1,
@@ -17,11 +18,12 @@ export const UpdateStateResult = {
   SUCCESS: 2,
   CONTINUE: 3
 };
-export const gameState = {
+
+export const INITIAL_GAME = {
   mistakesQuantity: 0,
   answersQuantity: 0,
   answers: [],
-  leftTime: 0,
+  leftTime: TIME_LIMIT,
 };
 
 export const allGameResults = [];
@@ -33,14 +35,6 @@ export const Answer = function (isCorrect, spentTime) {
 
 export const Timer = function (interval) {
   this.interval = interval;
-};
-
-Timer.prototype.tick = function () {
-  this.interval--;
-  if (this.interval < 0) {
-    return `Время вышло!`;
-  }
-  return `Осталось ${this.interval} секунд!`;
 };
 
 export const calculatePoints = (answers) => {
@@ -66,7 +60,7 @@ export const calculatePoints = (answers) => {
   return result;
 };
 
-export const formatResult = (allResults, playerResult) => {
+export const formatResult = (gameState, allResults, playerResult) => {
   let itemPosition;
   let itemsLessPercent;
   if (gameState.mistakesQuantity > MAX_MISTAKES) {
@@ -79,11 +73,25 @@ export const formatResult = (allResults, playerResult) => {
   return `Вы заняли ${itemPosition} место из ${allResults.length} игроков. </br> Это лучше, чем ${itemsLessPercent}% игроков`;
 };
 
+export const processResults = (gameState) => {
+  let itemPosition;
+  let itemsLessPercent;
+  if (gameState.mistakesQuantity > MAX_MISTAKES) {
+    return `У вас закончились все попытки. </br> Ничего, повезёт в следующий раз!`;
+  }
+  const playerResult = calculatePoints(gameState.answers);
+  allGameResults.push(playerResult);
+  allGameResults.sort((a, b) => b - a);
+  itemPosition = allGameResults.indexOf(playerResult) + 1;
+  itemsLessPercent = Math.round((allGameResults.length - itemPosition) / allGameResults.length * 100);
+  return `Вы заняли ${itemPosition} место из ${allGameResults.length} игроков. </br> Это лучше, чем ${itemsLessPercent}% игроков`;
+};
+
 export const createTimer = (timerInterval) => {
   return new Timer(timerInterval);
 };
 
-export const updateState = (isCorrect, spentTime = 30) => {
+export const updateState = (isCorrect, spentTime = 30, gameState) => {
   gameState.answers.push(new Answer(isCorrect, spentTime));
   gameState.mistakesQuantity += isCorrect ? 0 : 1;
   gameState.answersQuantity++;
@@ -96,9 +104,7 @@ export const updateState = (isCorrect, spentTime = 30) => {
   return UpdateStateResult.CONTINUE;
 };
 
-export const resetGameState = () => {
-  gameState.mistakesQuantity = 0;
-  gameState.answersQuantity = 0;
-  gameState.answers = [];
-  gameState.leftTime = TIME_LIMIT;
+export const tick = (gameState) => {
+  gameState.leftTime -= TIME_DELAY;
 };
+

@@ -18,8 +18,8 @@ export class ResultView extends AbstractView {
   bind() {
     const buttonEl = this.element.querySelector(`.main-replay`);
     buttonEl.addEventListener(`click`, () => {
-      this.onReply();
+      this.onReplay();
     });
   }
-  onReply() {}
+  onReplay() {}
 }

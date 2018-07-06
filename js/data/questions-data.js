@@ -1,29 +1,37 @@
 import sampleMelodies from './sample-data';
 
-const ArtistQuestion = function (questionText, melodySrc, answers) {
-  this.text = questionText;
-  this.type = `artist`;
-  this.melody = melodySrc;
-  this.answers = answers;
-};
+class ArtistQuestion {
+  constructor(questionText, melodySrc, answers) {
+    this.text = questionText;
+    this.type = `artist`;
+    this.melody = melodySrc;
+    this.answers = answers;
+  }
+}
 
-const ArtistAnswer = function (title, image, isCorrect) {
-  this.title = title;
-  this.image = image;
-  this.isCorrect = isCorrect;
-};
+class ArtistAnswer {
+  constructor(title, image, isCorrect) {
+    this.title = title;
+    this.image = image;
+    this.isCorrect = isCorrect;
+  }
+}
 
-const GenreQuestion = function (questionText, genre, answers) {
-  this.text = questionText;
-  this.type = `genre`;
-  this.genre = genre;
-  this.answers = answers;
-};
+class GenreQuestion {
+  constructor(questionText, genre, answers) {
+    this.text = questionText;
+    this.type = `genre`;
+    this.genre = genre;
+    this.answers = answers;
+  }
+}
 
-const GenreAnswer = function (melody, genre) {
-  this.melody = melody;
-  this.genre = genre;
-};
+class GenreAnswer {
+  constructor(melody, genre) {
+    this.melody = melody;
+    this.genre = genre;
+  }
+}
 
 const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;

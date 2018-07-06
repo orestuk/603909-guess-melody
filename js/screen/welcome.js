@@ -1,12 +1,13 @@
-import {ScreenType} from '../data/game-data';
-import {updateGameState} from '../controller';
+import router from '../router';
 import {WelcomeView} from '../view/welcome-view';
 import {renderScreen} from '../util';
 
-export default () => {
-  const view = new WelcomeView();
-  view.onClick = () => {
-    updateGameState(ScreenType.WELCOME);
-  };
-  renderScreen(view.element);
-};
+export class WelcomeScreen {
+  init() {
+    const view = new WelcomeView();
+    view.onClick = () => {
+      router.showGame();
+    };
+    renderScreen(view.element);
+  }
+}
